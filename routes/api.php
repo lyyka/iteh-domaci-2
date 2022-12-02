@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PetController;
+use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function() {
+    Route::prefix('/pets')->group(function() {
+        Route::get('/all', [PetController::class, 'all'])
+            ->name('api.pets.all');
+        Route::get('/search', [PetController::class, 'search'])
+            ->name('api.pets.search');
+        Route::post('/create', [PetController::class, 'create'])
+            ->name('api.pets.create');
+        Route::put('/{pet}/update', [PetController::class, 'update'])
+            ->name('api.pets.update');
+        Route::delete('/{pet}/delete', [PetController::class, 'delete'])
+            ->name('api.pets.delete');
+    });
 });
