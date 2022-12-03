@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['guest:sanctum', ForceJsonResponse::class])->group(function () {
+    Route::prefix('/user')->group(function () {
+        Route::post('/register', [AuthController::class, 'register'])
+            ->name('api.users.register');
+    });
+
+    Route::prefix('/user')->group(function () {
+        Route::post('/login', [AuthController::class, 'login'])
+            ->name('api.users.login');
+    });
 });
