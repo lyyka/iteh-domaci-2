@@ -16,8 +16,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function() {
-    Route::prefix('/pets')->group(function() {
+Route::middleware(['guest:sanctum', ForceJsonResponse::class])->group(function () {
+    Route::prefix('/user')->group(function () {
+        Route::post('/register', [AuthController::class, 'register'])
+            ->name('api.users.register');
+        Route::post('/login', [AuthController::class, 'login'])
+            ->name('api.users.login');
+    });
+});
+
+Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('api.users.logout');
+
+    Route::prefix('/pets')->group(function () {
         Route::get('/all', [PetController::class, 'all'])
             ->name('api.pets.all');
         Route::get('/search', [PetController::class, 'search'])

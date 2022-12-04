@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Middleware\ForceJsonResponse;
+use App\Http\Controllers\AppPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,14 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['guest:sanctum', ForceJsonResponse::class])->group(function () {
-    Route::prefix('/user')->group(function () {
-        Route::post('/register', [AuthController::class, 'register'])
-            ->name('api.users.register');
-    });
+Route::get('/', [AppPageController::class, 'show'])->name('web.home');
 
-    Route::prefix('/user')->group(function () {
-        Route::post('/login', [AuthController::class, 'login'])
-            ->name('api.users.login');
-    });
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AppPageController::class, 'show'])->name('web.users.login');
+    Route::get('/register', [AppPageController::class, 'show'])->name('web.users.register');
+});
+
+Route::middleware('auth:web')->group(function () {
+    Route::get('/dashboard', [AppPageController::class, 'show'])->name('web.users.dashboard');
 });

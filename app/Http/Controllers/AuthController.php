@@ -6,6 +6,8 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -14,19 +16,16 @@ class AuthController extends Controller
      * @param UserService $userService
      * @return JsonResponse
      */
-    public function register(RegisterRequest $request, UserService $userService) : JsonResponse
+    public function register(RegisterRequest $request, UserService $userService): JsonResponse
     {
         $user = $userService->register($request->toRegisterData());
-        $token = $userService->issueToken();
+        $userService->issueToken();
 
-        if($userService->login($user)) {
+        if ($userService->login($user)) {
             $request->session()->regenerate();
         }
 
-        return response()->json([
-            'success' => true,
-            'token' => $token->plainTextToken,
-        ]);
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -34,16 +33,31 @@ class AuthController extends Controller
      * @param UserService $userService
      * @return JsonResponse
      */
-    public function login(LoginRequest $request, UserService $userService) : JsonResponse
+    public function login(LoginRequest $request, UserService $userService): JsonResponse
     {
         $response = ['success' => false];
         $isLoggedIn = $userService->login($request->toCredentials());
 
-        if($isLoggedIn) {
+        if ($isLoggedIn) {
             $request->session()->regenerate();
             $response = ['success' => true];
         }
 
         return response()->json($response);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return response()->json(['success' => true]);
     }
 }

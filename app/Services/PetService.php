@@ -25,26 +25,25 @@ class PetService
     /**
      * @return Collection
      */
-    public function getAll() : Collection
+    public function getAll(): Collection
     {
-        return Pet::all();
+        return Pet::with('images')->get();
     }
 
     /**
      * @param PetSearchData $petSearchData
      * @return Collection
      */
-    public function search(PetSearchData $petSearchData) : Collection
+    public function search(PetSearchData $petSearchData): Collection
     {
         $res = Pet::query()
-            ->where(function(Builder $builder) use ($petSearchData) {
+            ->where(function (Builder $builder) use ($petSearchData) {
                 $search = "%{$petSearchData->getQuery()}%";
                 $builder->where('name', 'like', $search)
-                    ->orWhere('type', 'like',$search);
+                    ->orWhere('type', 'like', $search);
             });
 
-        if($type = $petSearchData->getType())
-        {
+        if ($type = $petSearchData->getType()) {
             $res = $res->where('type', $type);
         }
 
@@ -55,9 +54,9 @@ class PetService
      * @param PetData $petData
      * @return Pet
      */
-    public function save(PetData $petData) : Pet
+    public function save(PetData $petData): Pet
     {
-        if(!$this->pet) {
+        if (!$this->pet) {
             $this->setPet(new Pet());
         }
 
@@ -69,7 +68,7 @@ class PetService
     /**
      * @return void
      */
-    public function delete() : void
+    public function delete(): void
     {
         $this->pet->delete();
     }
