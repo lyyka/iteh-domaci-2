@@ -32,7 +32,7 @@ export default {
 };
 </script>
 <template>
-    <div>
+    <div class="container">
         <div v-if="errorMessage" class="alert alert-danger" role="alert">
             {{ errorMessage }}
         </div>

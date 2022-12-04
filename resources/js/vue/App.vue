@@ -20,9 +20,7 @@ export default {
 <template>
     <div>
         <Header/>
-        <div class="container mb-5">
-            <router-view/>
-        </div>
+        <router-view/>
     </div>
 </template>
 
