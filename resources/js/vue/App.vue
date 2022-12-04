@@ -20,7 +20,7 @@ export default {
 <template>
     <div>
         <Header/>
-        <div class="container">
+        <div class="container mb-5">
             <router-view/>
         </div>
     </div>
@@ -28,4 +28,8 @@ export default {
 
 <style lang="scss">
 @import 'bootstrap/scss/bootstrap.scss';
+
+img {
+    max-width: 100%;
+}
 </style>

@@ -23,7 +23,9 @@
                 pets: {
                     all: '{{ route('api.pets.all') }}',
                 },
+                unsplashPhotoSearch: 'https://api.unsplash.com/search/photos/'
             },
+            unsplashApiKey: '{{ config('app.unsplashApiKey') }}'
         }
 
         window.isLoggedIn = {{ \Illuminate\Support\Facades\Auth::check() ? 'true' : 'false' }};
