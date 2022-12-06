@@ -10,12 +10,38 @@ export default {
 
     data() {
         return {
-            photos: [],
+            photosSection: {
+                activeCategory: 'pets',
+                page: 1,
+                perPage: 12,
+                categories: ['pets', 'cats', 'dogs', 'birds', 'turtles', 'fish'],
+                photos: [],
+            }
         };
     },
 
     async mounted() {
-        this.photos = await unsplashApi.search('pets', 1, 12);
+        await this.search(this.photosSection.activeCategory);
+    },
+
+    methods: {
+        async search(term) {
+            const apiRes = await unsplashApi.search(
+                term, this.photosSection.page, this.photosSection.perPage
+            );
+            this.photosSection.photos = apiRes.images;
+            this.photosSection.activeCategory = term;
+        },
+
+        async page(change) {
+            this.photosSection.page += change;
+
+            if (this.photosSection.page === 0) {
+                this.photosSection.page = 1;
+            }
+
+            await this.search(this.photosSection.activeCategory);
+        }
     }
 }
 </script>
@@ -44,14 +70,44 @@ export default {
         <div class="container mt-5">
             <h3>( a list of random pets 💖 )</h3>
 
-            <div class="images-grid three text-center mt-4">
-                <div v-for="photo in photos" :key="photo.getId()">
+            <div class="row mt-4 g-5 overflow-auto">
+                <div class="col-md-4 col-sm-2 col-6" v-for="category in photosSection.categories" :key="category">
+                    <p class="category-item"
+                       v-bind:class="photosSection.activeCategory === category ? 'active' : ''"
+                       @click="search(category)">
+                        {{ category }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-5 text-center mt-2">
+                <div class="col-12 col-sm-6 col-md-4"
+                     v-for="photo in photosSection.photos"
+                     :key="photo.getId()">
                     <img
+                        class="pet-image"
                         style="display: inline-block;"
                         :alt="photo.getDescription()"
                         :src="photo.getSrc()"
                     />
                 </div>
+            </div>
+
+            <div class="mt-5 text-end">
+                <button class="btn me-4 btn-dark"
+                        :disabled="photosSection.page === 1"
+                        @click="page(-1)">
+                    &lt; previous page
+                </button>
+
+                <p class="rounded-1 border-dark py-2 px-4 border d-inline-flex me-4">
+                    {{ photosSection.page }}
+                </p>
+
+                <button class="btn btn-dark"
+                        @click="page(1)">
+                    next page &gt;
+                </button>
             </div>
         </div>
 
@@ -63,20 +119,20 @@ export default {
 </template>
 
 <style lang="scss">
-.images-grid {
-    display: grid;
-    grid-gap: 32px;
+.category-item {
+    color: #c2c2c2;
+    font-size: 24px;
+    line-height: 30px;
+    display: inline-flex;
 
-    &.three {
-        grid-template-columns: repeat(3, 1fr);
-
-        @media only screen and (max-width: 768px) {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        @media only screen and (max-width: 375px) {
-            grid-template-columns: 1fr;
-        }
+    &:hover, &.active {
+        color: black;
+        cursor: pointer;
     }
+}
+
+.pet-image {
+    border-radius: 8px;
+    max-height: 360px;
 }
 </style>

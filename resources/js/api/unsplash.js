@@ -9,10 +9,12 @@ export default {
 
         let res = await window.axios.get(composed);
 
-        res = res.data.results;
-
-        return res.map(image => {
+        const images = res.data.results.map(image => {
             return new UnsplashImage(image);
         });
+
+        return {
+            images: images,
+        }
     },
 };
