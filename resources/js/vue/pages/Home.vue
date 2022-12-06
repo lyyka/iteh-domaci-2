@@ -10,6 +10,7 @@ export default {
 
     data() {
         return {
+            activeTab: 'randomList',
             photosSection: {
                 activeCategory: 'pets',
                 page: 1,
@@ -41,6 +42,10 @@ export default {
             }
 
             await this.search(this.photosSection.activeCategory);
+        },
+
+        setActiveTab(tab) {
+            this.activeTab = tab;
         }
     }
 }
@@ -59,46 +64,65 @@ export default {
         </div>
 
         <div class="container mt-5">
-            <h3>( a list of random pets 💖 )</h3>
-
-            <div class="row mt-4 g-5 overflow-auto">
-                <div class="col-md-4 col-sm-2 col-6" v-for="category in photosSection.categories" :key="category">
-                    <p class="category-item"
-                       v-bind:class="photosSection.activeCategory === category ? 'active' : ''"
-                       @click="search(category)">
-                        {{ category }}
-                    </p>
-                </div>
+            <div class="row text-center g-5">
+                <h3
+                    @click="setActiveTab('randomList')"
+                    v-bind:class="activeTab === 'randomList' ? 'active' : ''"
+                    class="tab col-12 col-sm-6">( a list of random pets 💖 )</h3>
+                <h3
+                    @click="setActiveTab('feed')"
+                    v-bind:class="activeTab === 'feed' ? 'active' : ''"
+                    class="tab col-12 col-sm-6">( feed 🐶 )</h3>
             </div>
 
-            <div class="row g-5 text-center mt-2">
-                <div class="col-12 col-sm-6 col-md-4"
-                     v-for="photo in photosSection.photos"
-                     :key="photo.getId()">
-                    <img
-                        class="pet-image"
-                        style="display: inline-block;"
-                        :alt="photo.getDescription()"
-                        :src="photo.getSrc()"
-                    />
+            <div v-if="activeTab === 'randomList'">
+                <div class="row mt-4 g-5 overflow-auto">
+                    <div class="col-md-4 col-sm-2 col-6" v-for="category in photosSection.categories" :key="category">
+                        <p class="category-item"
+                           v-bind:class="photosSection.activeCategory === category ? 'active' : ''"
+                           @click="search(category)">
+                            {{ category }}
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-5 text-end">
-                <button class="btn me-4 btn-dark"
-                        :disabled="photosSection.page === 1"
-                        @click="page(-1)">
-                    &lt; previous page
-                </button>
+                <div class="row g-5 text-center mt-2">
+                    <div class="col-12 col-sm-6 col-md-4"
+                         v-for="photo in photosSection.photos"
+                         :key="photo.getId()">
+                        <img
+                            class="pet-image"
+                            style="display: inline-block;"
+                            :alt="photo.getDescription()"
+                            :src="photo.getSrc()"
+                        />
+                    </div>
+                </div>
 
-                <p class="rounded-1 border-dark py-2 px-4 border d-inline-flex me-4">
-                    {{ photosSection.page }}
+                <p class="my-3 text-dark">
+                    Powered by <a class="text-info" href="https://unsplash.com">Unsplash</a>
                 </p>
 
-                <button class="btn btn-dark"
-                        @click="page(1)">
-                    next page &gt;
-                </button>
+                <div class="mt-5 text-end">
+                    <button class="btn me-4 btn-dark"
+                            :disabled="photosSection.page === 1"
+                            @click="page(-1)">
+                        &lt; previous page
+                    </button>
+
+                    <p class="rounded-1 border-dark py-2 px-4 border d-inline-flex me-4">
+                        {{ photosSection.page }}
+                    </p>
+
+                    <button class="btn btn-dark"
+                            @click="page(1)">
+                        next page &gt;
+                    </button>
+                </div>
+            </div>
+
+            <div v-else-if="activeTab === 'feed'">
+
             </div>
         </div>
 
@@ -117,6 +141,15 @@ export default {
 
 .main-title {
     letter-spacing: 4px;
+}
+
+.tab {
+    color: #c2c2c2;
+
+    &:hover, &.active {
+        color: black;
+        cursor: pointer;
+    }
 }
 
 .category-item {
