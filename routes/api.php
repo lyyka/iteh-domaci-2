@@ -30,8 +30,10 @@ Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function ()
         ->name('api.users.logout');
 
     Route::prefix('/pets')->group(function () {
-        Route::get('/all', [PetController::class, 'all'])
-            ->name('api.pets.all');
+        Route::get('/latest-pets', [PetController::class, 'latestPets'])
+            ->name('api.pets.latest-pets');
+        Route::get('/my-pets', [PetController::class, 'myPets'])
+            ->name('api.pets.my-pets');
         Route::get('/search', [PetController::class, 'search'])
             ->name('api.pets.search');
         Route::post('/create', [PetController::class, 'create'])

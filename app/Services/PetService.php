@@ -7,6 +7,7 @@ use App\Services\Dto\PetData;
 use App\Services\Dto\PetSearchData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class PetService
 {
@@ -25,9 +26,24 @@ class PetService
     /**
      * @return Collection
      */
-    public function getAll(): Collection
+    public function getAuthUsersPets(): Collection
     {
-        return Pet::with('images')->get();
+        return Pet::with('images')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+    }
+
+    /**
+     * @param int $limit
+     * @return Collection
+     */
+    public function getLatestPets(int $limit = 10): Collection
+    {
+        return Pet::with('images')
+            ->latest()
+            ->limit($limit)
+            ->get();
     }
 
     /**

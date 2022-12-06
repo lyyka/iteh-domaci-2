@@ -21,7 +21,9 @@
                 register: '{{ route('api.users.register') }}',
                 logout: '{{ route('api.users.logout') }}',
                 pets: {
-                    all: '{{ route('api.pets.all') }}',
+                    latestPets: '{{ route('api.pets.latest-pets') }}',
+                    myPets: '{{ route('api.pets.my-pets') }}',
+                    search: '{{ route('api.pets.search') }}',
                 },
                 unsplashPhotoSearch: 'https://api.unsplash.com/search/photos/'
             },

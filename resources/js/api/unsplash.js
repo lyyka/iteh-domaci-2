@@ -1,4 +1,4 @@
-import UnsplashImage from "./dto/UnsplashImage";
+import UnsplashImage from "@/api/dto/UnsplashImage";
 
 export default {
     search: async (query, page = 1, perPage = 10) => {

@@ -18,9 +18,20 @@ class PetController extends Controller
      * @param PetService $petService
      * @return AnonymousResourceCollection
      */
-    public function all(Request $request, PetService $petService): AnonymousResourceCollection
+    public function latestPets(Request $request, PetService $petService): AnonymousResourceCollection
     {
-        $pets = $petService->getAll();
+        $pets = $petService->getLatestPets(12);
+        return PetResource::collection($pets);
+    }
+
+    /**
+     * @param Request $request
+     * @param PetService $petService
+     * @return AnonymousResourceCollection
+     */
+    public function myPets(Request $request, PetService $petService): AnonymousResourceCollection
+    {
+        $pets = $petService->getAuthUsersPets();
         return PetResource::collection($pets);
     }
 
