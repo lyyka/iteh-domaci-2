@@ -24,6 +24,13 @@
                     latestPets: '{{ route('api.pets.latest-pets') }}',
                     myPets: '{{ route('api.pets.my-pets') }}',
                     search: '{{ route('api.pets.search') }}',
+                    store: '{{ route('api.pets.create') }}',
+                },
+                petType: {
+                    all: '{{ route('api.pet-types.all') }}'
+                },
+                petColor: {
+                    all: '{{ route('api.pet-colors.all') }}'
                 },
                 unsplashPhotoSearch: 'https://api.unsplash.com/search/photos/'
             },

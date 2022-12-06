@@ -34,23 +34,23 @@ export default {
 };
 </script>
 <template>
-    <div class="container">
+    <div class="container mt-5">
         <div v-if="errorMessage" class="alert alert-danger" role="alert">
             {{ errorMessage }}
         </div>
 
-        <h1>Register</h1>
+        <h1>register</h1>
 
         <form>
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
+                <label for="name" class="form-label">name</label>
                 <input type="text" class="form-control" id="name" v-model="form.name"
                        autocomplete="name"
-                       placeholder="Full name">
+                       placeholder="full name">
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label">email</label>
                 <input type="email" class="form-control" id="email" v-model="form.email"
                        autocomplete="email"
                        placeholder="example@email.com">
@@ -60,11 +60,11 @@ export default {
                 <label for="password" class="form-label">Password</label>
                 <input type="password" autocomplete="new-password" v-model="form.password" class="form-control"
                        id="password"
-                       placeholder="Password">
+                       placeholder="password">
             </div>
 
             <button class="btn btn-dark" type="button" @click="register">
-                Register
+                register
             </button>
         </form>
     </div>

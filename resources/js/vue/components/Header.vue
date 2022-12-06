@@ -23,28 +23,28 @@ export default {
 }
 </script>
 <template>
-    <header class="mb-5">
+    <header>
         <nav>
             <div class="py-3 px-5 shadow-sm">
                 <div class="container d-flex justify-content-between align-items-center">
                     <ul class="nav-list">
                         <li class="me-2">
-                            <router-link class="text-dark" :to="{name: 'home'}">Home</router-link>
+                            <router-link class="text-dark" :to="{name: 'home'}">home</router-link>
                         </li>
                     </ul>
 
                     <ul class="nav-list">
                         <li v-if="!getIsLoggedIn" class="me-2">
-                            <router-link class="btn btn-dark" :to="{name: 'login'}">Log in</router-link>
+                            <router-link class="btn btn-dark" :to="{name: 'login'}">log in</router-link>
                         </li>
                         <li v-if="!getIsLoggedIn">
-                            <router-link class="btn btn-success" :to="{name: 'register'}">Register</router-link>
+                            <router-link class="btn btn-success" :to="{name: 'register'}">register</router-link>
                         </li>
                         <li class="me-4" v-if="getIsLoggedIn">
-                            <router-link class="btn btn-success" :to="{name: 'dashboard'}">Dashboard</router-link>
+                            <router-link class="btn btn-success" :to="{name: 'dashboard'}">dashboard</router-link>
                         </li>
                         <li v-if="getIsLoggedIn">
-                            <a href="#" @click="logout" class="text-dark">Log out</a>
+                            <a href="#" @click="logout" class="text-dark">log out</a>
                         </li>
                     </ul>
                 </div>

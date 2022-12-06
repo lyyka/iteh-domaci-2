@@ -47,23 +47,14 @@ export default {
 </script>
 <template>
     <div>
-        <div class="container text-center">
-            <h1>
-                Pets App API
-            </h1>
-            <p class="mt-2">
-                API returns a list of pets
-            </p>
-            <div>
-                <router-link v-if="!getIsLoggedIn" class="d-inline-block btn btn-dark me-2" :to="{name: 'login'}">
-                    Log in
-                </router-link>
-                <router-link v-if="!getIsLoggedIn" class="d-inline-block btn btn-success" :to="{name: 'register'}">
-                    Register
-                </router-link>
-                <router-link v-if="getIsLoggedIn" class="d-inline-block btn btn-success" :to="{name: 'dashboard'}">
-                    Dashboard
-                </router-link>
+        <div class="hero py-5 d-flex justify-content-center align-items-center">
+            <div class="container text-center">
+                <h1 class="main-title text-white">
+                    pets app
+                </h1>
+                <p class="mt-2 text-white">
+                    app to upload yours and view other peoples pets
+                </p>
             </div>
         </div>
 
@@ -119,6 +110,15 @@ export default {
 </template>
 
 <style lang="scss">
+.hero {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/storage/home-hero.jpeg") center;
+    height: 420px;
+}
+
+.main-title {
+    letter-spacing: 4px;
+}
+
 .category-item {
     color: #c2c2c2;
     font-size: 24px;

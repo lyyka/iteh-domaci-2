@@ -76,7 +76,9 @@ class PetService
             $this->setPet(new Pet());
         }
 
-        $this->pet->fill($petData->toArray())->save();
+        $this->pet->fill(array_merge([
+            'user_id' => Auth::guard('web')->id()
+        ], $petData->toArray()))->save();
 
         return $this->pet;
     }

@@ -3,6 +3,7 @@ import {createApp} from "vue";
 import {createPinia} from 'pinia';
 import App from './vue/App.vue';
 import router from './vue/router.js';
+import 'bootstrap/dist/js/bootstrap.min';
 
 const app = createApp(App);
 const pinia = createPinia();

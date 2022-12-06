@@ -27,23 +27,21 @@ class PetStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => ['required', 'integer', Rule::exists('users', 'id')],
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255', Rule::in(PetType::all())],
             'colors' => ['required', 'array'],
             'colors.*' => ['required', 'string'],
-            'date_of_birth' => ['required', 'date', 'before:today'],
+            'date_of_birth' => ['nullable', 'date', 'before:today'],
         ];
     }
 
-    public function toPetData() : PetData
+    public function toPetData(): PetData
     {
         return new PetData(
-            $this->input('user_id'),
             $this->input('name'),
             $this->input('type'),
             $this->input('colors'),
-            $this->input('date_of_birth'),
+            $this->date('date_of_birth'),
         );
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PetColorController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\PetTypeController;
 use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +30,16 @@ Route::middleware(['guest:sanctum', ForceJsonResponse::class])->group(function (
 Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('api.users.logout');
+
+    Route::prefix('/pet-types')->group(function () {
+        Route::get('/all', [PetTypeController::class, 'all'])
+            ->name('api.pet-types.all');
+    });
+
+    Route::prefix('/pet-colors')->group(function () {
+        Route::get('/all', [PetColorController::class, 'all'])
+            ->name('api.pet-colors.all');
+    });
 
     Route::prefix('/pets')->group(function () {
         Route::get('/latest-pets', [PetController::class, 'latestPets'])
