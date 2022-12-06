@@ -29,7 +29,13 @@ export default {
                 <div class="container d-flex justify-content-between align-items-center">
                     <ul class="nav-list">
                         <li class="me-2">
-                            <router-link class="text-dark" :to="{name: 'home'}">home</router-link>
+                            <router-link class="text-dark" :to="{name: 'home'}">
+                                <img
+                                    alt="logo"
+                                    src="/storage/logo.png"
+                                />
+                                <span class="ms-3">pets app</span>
+                            </router-link>
                         </li>
                     </ul>
 

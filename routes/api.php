@@ -50,9 +50,9 @@ Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function ()
             ->name('api.pets.search');
         Route::post('/create', [PetController::class, 'create'])
             ->name('api.pets.create');
-        Route::put('/{pet}/update', [PetController::class, 'update'])
+        Route::put('/update', [PetController::class, 'update'])
             ->name('api.pets.update');
-        Route::delete('/{pet}/delete', [PetController::class, 'delete'])
+        Route::delete('/delete', [PetController::class, 'delete'])
             ->name('api.pets.delete');
     });
 });

@@ -29,4 +29,14 @@ export default {
 
         return res.map(o => new PetResource(o));
     },
+
+    delete: async (pet) => {
+        const route = window.appConfig.api.pets.delete;
+
+        const res = await window.axios.delete(
+            `${route}?pet_id=${pet.getId()}`
+        );
+
+        return res.status === 200;
+    },
 };

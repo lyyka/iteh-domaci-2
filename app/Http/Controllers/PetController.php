@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PetSearchRequest;
 use App\Http\Requests\PetStoreRequest;
+use App\Http\Requests\PetUpdateRequest;
 use App\Http\Resources\PetResource;
 use App\Models\Pet;
 use App\Services\PetService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
@@ -60,20 +62,32 @@ class PetController extends Controller
     }
 
     /**
-     * @param PetStoreRequest $request
-     * @param Pet $pet
+     * @param PetUpdateRequest $request
      * @param PetService $petService
      * @return PetResource
      */
-    public function update(PetStoreRequest $request, Pet $pet, PetService $petService): PetResource
+    public function update(PetUpdateRequest $request, PetService $petService): PetResource
     {
+        $pet = Pet::findOrFail($request->input('pet_id'));
+
+        abort_if($pet->user_id != Auth::guard('web')->id(), 403);
+
         $pet = $petService->setPet($pet)->save($request->toPetData());
 
         return new PetResource($pet);
     }
 
-    public function delete(Request $request, Pet $pet, PetService $petService): JsonResponse
+    /**
+     * @param Request $request
+     * @param PetService $petService
+     * @return JsonResponse
+     */
+    public function delete(Request $request, PetService $petService): JsonResponse
     {
+        $pet = Pet::findOrFail($request->input('pet_id'));
+
+        abort_if($pet->user_id != Auth::guard('web')->id(), 403);
+
         $petService->setPet($pet)->delete();
 
         return response()->json(['success' => true]);

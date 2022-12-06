@@ -29,7 +29,7 @@ class PetService
     public function getAuthUsersPets(): Collection
     {
         return Pet::with('images')
-            ->where('user_id', Auth::id())
+            ->where('user_id', Auth::guard('web')->id())
             ->latest()
             ->get();
     }

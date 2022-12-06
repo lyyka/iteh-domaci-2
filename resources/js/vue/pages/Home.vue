@@ -8,6 +8,7 @@ import UnsplashCard from "@/vue/components/UnsplashCard.vue";
 
 export default {
     components: {UnsplashCard, PetCard},
+
     computed: {
         ...mapState(useUserStore, ['getIsLoggedIn']),
     },
@@ -27,11 +28,11 @@ export default {
     },
 
     async mounted() {
-        await this.search(this.photosSection.activeCategory);
+        await this.searchUnsplash(this.photosSection.activeCategory);
     },
 
     methods: {
-        async search(term) {
+        async searchUnsplash(term) {
             const apiRes = await unsplashApi.search(
                 term, this.photosSection.page, this.photosSection.perPage
             );
@@ -39,14 +40,14 @@ export default {
             this.photosSection.activeCategory = term;
         },
 
-        async page(change) {
+        async pageUnsplash(change) {
             this.photosSection.page += change;
 
             if (this.photosSection.page === 0) {
                 this.photosSection.page = 1;
             }
 
-            await this.search(this.photosSection.activeCategory);
+            await this.searchUnsplash(this.photosSection.activeCategory);
         },
 
         async loadFeed() {
@@ -56,7 +57,7 @@ export default {
         setActiveTab(tab) {
             this.activeTab = tab;
 
-            if (this.activeTab === 'feed') {
+            if (this.activeTab === 'feed' && this.getIsLoggedIn) {
                 this.loadFeed();
             }
         }
@@ -93,7 +94,7 @@ export default {
                     <div class="col-md-4 col-sm-2 col-6" v-for="category in photosSection.categories" :key="category">
                         <p class="category-item"
                            v-bind:class="photosSection.activeCategory === category ? 'active' : ''"
-                           @click="search(category)">
+                           @click="searchUnsplash(category)">
                             {{ category }}
                         </p>
                     </div>
@@ -116,7 +117,7 @@ export default {
                 <div class="mt-5 text-end">
                     <button class="btn me-4 btn-dark"
                             :disabled="photosSection.page === 1"
-                            @click="page(-1)">
+                            @click="pageUnsplash(-1)">
                         &lt; previous page
                     </button>
 
@@ -125,19 +126,38 @@ export default {
                     </p>
 
                     <button class="btn btn-dark"
-                            @click="page(1)">
+                            @click="pageUnsplash(1)">
                         next page &gt;
                     </button>
                 </div>
             </div>
 
             <div v-else-if="activeTab === 'feed'">
+                <div v-if="!getIsLoggedIn">
+                    <div class="row g-5 text-center">
+                        <div class="col">
+                            <img
+                                alt="Not logged in animation"
+                                src="/storage/feed-register.gif"
+                            />
+                        </div>
+                        <div class="col align-self-center text-start">
+                            <h4>log in or register to see the feed</h4>
+
+                            <hr/>
+
+                            <router-link class="btn btn-dark me-2" :to="{name: 'login'}">log in</router-link>
+                            <router-link class="btn btn-success" :to="{name: 'register'}">register</router-link>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row g-5 text-center mt-2">
                     <div class="col-12 col-sm-6 col-md-4"
                          v-for="pet in feedData ?? []"
                          :key="pet.getId()">
                         <PetCard
-                            :pet="pet"
+                            :pet-prop="pet"
                         />
                     </div>
                 </div>
