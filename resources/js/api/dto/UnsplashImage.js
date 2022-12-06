@@ -3,6 +3,10 @@ export default class UnsplashImage {
         this.imageObj = imageObj;
     }
 
+    getImageUrl() {
+        return this.imageObj.links.html;
+    }
+
     getDescription() {
         return this.imageObj.description;
     }

@@ -1,9 +1,13 @@
 <script>
 import unsplashApi from '@/api/unsplash.js';
+import petsApi from '@/api/pets.js';
 import {mapState} from "pinia";
 import {useUserStore} from "@/stores/UserStore";
+import PetCard from "@/vue/components/PetCard.vue";
+import UnsplashCard from "@/vue/components/UnsplashCard.vue";
 
 export default {
+    components: {UnsplashCard, PetCard},
     computed: {
         ...mapState(useUserStore, ['getIsLoggedIn']),
     },
@@ -11,6 +15,7 @@ export default {
     data() {
         return {
             activeTab: 'randomList',
+            feedData: null,
             photosSection: {
                 activeCategory: 'pets',
                 page: 1,
@@ -44,8 +49,16 @@ export default {
             await this.search(this.photosSection.activeCategory);
         },
 
+        async loadFeed() {
+            this.feedData = await petsApi.latestPets();
+        },
+
         setActiveTab(tab) {
             this.activeTab = tab;
+
+            if (this.activeTab === 'feed') {
+                this.loadFeed();
+            }
         }
     }
 }
@@ -68,7 +81,7 @@ export default {
                 <h3
                     @click="setActiveTab('randomList')"
                     v-bind:class="activeTab === 'randomList' ? 'active' : ''"
-                    class="tab col-12 col-sm-6">( a list of random pets 💖 )</h3>
+                    class="tab col-12 col-sm-6">( random pets 💖 )</h3>
                 <h3
                     @click="setActiveTab('feed')"
                     v-bind:class="activeTab === 'feed' ? 'active' : ''"
@@ -90,11 +103,8 @@ export default {
                     <div class="col-12 col-sm-6 col-md-4"
                          v-for="photo in photosSection.photos"
                          :key="photo.getId()">
-                        <img
-                            class="pet-image"
-                            style="display: inline-block;"
-                            :alt="photo.getDescription()"
-                            :src="photo.getSrc()"
+                        <UnsplashCard
+                            :image="photo"
                         />
                     </div>
                 </div>
@@ -122,7 +132,15 @@ export default {
             </div>
 
             <div v-else-if="activeTab === 'feed'">
-
+                <div class="row g-5 text-center mt-2">
+                    <div class="col-12 col-sm-6 col-md-4"
+                         v-for="pet in feedData ?? []"
+                         :key="pet.getId()">
+                        <PetCard
+                            :pet="pet"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -162,10 +180,5 @@ export default {
         color: black;
         cursor: pointer;
     }
-}
-
-.pet-image {
-    border-radius: 8px;
-    max-height: 360px;
 }
 </style>

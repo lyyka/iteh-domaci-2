@@ -5,6 +5,10 @@ export default class PetResource {
         this.pet = pet;
     }
 
+    getId() {
+        return this.pet.id;
+    }
+
     getName() {
         return this.pet.name;
     }

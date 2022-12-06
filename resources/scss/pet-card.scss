@@ -1,0 +1,23 @@
+.pet-card {
+    position: relative;
+
+    &:hover {
+        .pet-card--content {
+            display: block;
+        }
+    }
+
+    &--image {
+        display: inline-block;
+        border-radius: 8px;
+        max-height: 360px;
+    }
+
+    &--content {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+}
