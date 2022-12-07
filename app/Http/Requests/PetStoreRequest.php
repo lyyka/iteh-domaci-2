@@ -27,6 +27,7 @@ class PetStoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'image' => ['required', 'file', 'mimes:png,jpg,jpeg,gif'],
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:255', Rule::in(PetType::all())],
             'colors' => ['required', 'array'],
@@ -42,6 +43,7 @@ class PetStoreRequest extends FormRequest
             $this->input('type'),
             $this->input('colors'),
             $this->date('date_of_birth'),
+            $this->file('image'),
         );
     }
 }

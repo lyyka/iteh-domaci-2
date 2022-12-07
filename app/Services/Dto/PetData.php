@@ -3,6 +3,7 @@
 namespace App\Services\Dto;
 
 use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
 
 class PetData
 {
@@ -11,8 +12,17 @@ class PetData
         private string  $type,
         private array   $colors,
         private ?Carbon $dateOfBirth,
+        private ?UploadedFile $image,
     )
     {
+    }
+
+    /**
+     * @return UploadedFile|null
+     */
+    public function getImage(): ?UploadedFile
+    {
+        return $this->image;
     }
 
     public function toArray(): array

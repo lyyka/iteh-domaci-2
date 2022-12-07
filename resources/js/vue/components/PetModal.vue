@@ -23,6 +23,7 @@ export default {
                 type: null,
                 colors: [],
                 date_of_birth: null,
+                image: null,
             },
             formErrors: {},
         };
@@ -58,6 +59,10 @@ export default {
             this.form.date_of_birth = dob.getFullYear() + "-" + (month) + "-" + (day);
         },
 
+        imageSelected(e) {
+            this.form.image = e.target.files[0];
+        },
+
         open() {
             this.$refs.openCreatePetModal.click();
         },
@@ -69,12 +74,19 @@ export default {
         save() {
             this.formErrors = {};
 
+            const headers = {
+                'Accept': 'application/json',
+            };
+
+            if (!this.pet) headers['Content-Type'] = 'multipart/form-data';
+
             const promise = this.pet ?
                 window.axios.put(this.$appConfig.api.pets.update, {
                     ...this.form,
+                    image: null,
                     pet_id: this.pet.getId(),
-                }) :
-                window.axios.post(this.$appConfig.api.pets.store, this.form);
+                }, {headers}) :
+                window.axios.post(this.$appConfig.api.pets.store, this.form, {headers});
 
             promise
                 .then(r => {
@@ -84,6 +96,7 @@ export default {
                     }
                 })
                 .catch(e => {
+                    console.log(e.response.data.errors);
                     if (e.response?.status === 422) {
                         this.formErrors = e.response.data.errors;
                     }
@@ -117,6 +130,18 @@ export default {
                 </div>
                 <div class="modal-body">
                     <form>
+                        <div class="mb-3" v-if="!pet">
+                            <label for="image" class="form-label">
+                                <span class="text-danger">*</span> image</label>
+                            <input type="file" class="form-control"
+                                   @change="imageSelected"
+                                   id="image">
+                            <div v-bind:style="formErrors.image ? 'display: block;' : ''"
+                                 class="invalid-feedback">
+                                {{ formErrors.image ? formErrors.image[0] : '' }}
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="name" class="form-label">
                                 <span class="text-danger">*</span> name</label>

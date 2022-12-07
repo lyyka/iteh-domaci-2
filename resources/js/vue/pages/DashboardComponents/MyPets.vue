@@ -26,7 +26,7 @@ export default {
 </script>
 <template>
     <div class="d-flex">
-        <h3 class="me-3">( a list of your pets 💖 )</h3>
+        <h3 class="me-3">( a list of your posts 💖 )</h3>
 
         <button type="button" class="btn btn-dark"
                 data-bs-toggle="modal" data-bs-target="#createPetModal">

@@ -24,6 +24,7 @@ class PetUpdateRequest extends PetStoreRequest
     public function rules()
     {
         return array_merge(parent::rules(), [
+            'image' => ['nullable'],
             'pet_id' => ['required', 'integer', Rule::exists('pets', 'id')],
         ]);
     }

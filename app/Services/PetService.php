@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Pet;
+use App\Models\PetImage;
 use App\Services\Dto\PetData;
 use App\Services\Dto\PetSearchData;
 use Illuminate\Database\Eloquent\Builder;
@@ -72,13 +73,22 @@ class PetService
      */
     public function save(PetData $petData): Pet
     {
-        if (!$this->pet) {
+        $isNew = $this->pet == null;
+
+        if ($isNew) {
             $this->setPet(new Pet());
         }
 
         $this->pet->fill(array_merge([
             'user_id' => Auth::guard('web')->id()
         ], $petData->toArray()))->save();
+
+        if ($isNew) {
+            $image = new PetImage();
+            $image->pet_id = $this->pet->id;
+            $image->filename = basename($petData->getImage()?->store('pet-images', 'public'));
+            $image->save();
+        }
 
         return $this->pet;
     }
