@@ -7,8 +7,6 @@ export default {
             `${route}?search=${query}&page=${page}&per_page=${perPage}`,
         );
 
-        console.log(res);
-
         const images = res.data.results.map(image => {
             return new UnsplashImage(image);
         });

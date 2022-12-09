@@ -1,13 +1,11 @@
 <script>
-import unsplashApi from '@/api/unsplash.js';
-import petsApi from '@/api/pets.js';
 import {mapState} from "pinia";
 import {useUserStore} from "@/stores/UserStore";
-import PetCard from "@/vue/components/PetCard.vue";
-import UnsplashCard from "@/vue/components/UnsplashCard.vue";
+import Feed from "@/vue/pages/HomeComponents/Feed.vue";
+import UnsplashFeed from "@/vue/pages/HomeComponents/UnsplashFeed.vue";
 
 export default {
-    components: {UnsplashCard, PetCard},
+    components: {UnsplashFeed, Feed},
 
     computed: {
         ...mapState(useUserStore, ['getIsLoggedIn']),
@@ -16,50 +14,12 @@ export default {
     data() {
         return {
             activeTab: 'randomList',
-            feedData: null,
-            photosSection: {
-                activeCategory: 'pets',
-                page: 1,
-                perPage: 12,
-                categories: ['pets', 'cats', 'dogs', 'birds', 'turtles', 'fish'],
-                photos: [],
-            }
         };
     },
 
-    async mounted() {
-        await this.searchUnsplash(this.photosSection.activeCategory);
-    },
-
     methods: {
-        async searchUnsplash(term) {
-            const apiRes = await unsplashApi.search(
-                term, this.photosSection.page, this.photosSection.perPage
-            );
-            this.photosSection.photos = apiRes.images;
-            this.photosSection.activeCategory = term;
-        },
-
-        async pageUnsplash(change) {
-            this.photosSection.page += change;
-
-            if (this.photosSection.page === 0) {
-                this.photosSection.page = 1;
-            }
-
-            await this.searchUnsplash(this.photosSection.activeCategory);
-        },
-
-        async loadFeed() {
-            this.feedData = await petsApi.latestPets();
-        },
-
         setActiveTab(tab) {
             this.activeTab = tab;
-
-            if (this.activeTab === 'feed' && this.getIsLoggedIn) {
-                this.loadFeed();
-            }
         }
     }
 }
@@ -90,77 +50,11 @@ export default {
             </div>
 
             <div v-if="activeTab === 'randomList'">
-                <div class="row mt-4 g-5 overflow-auto">
-                    <div class="col-md-4 col-sm-2 col-6" v-for="category in photosSection.categories" :key="category">
-                        <p class="category-item"
-                           v-bind:class="photosSection.activeCategory === category ? 'active' : ''"
-                           @click="searchUnsplash(category)">
-                            {{ category }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row g-5 text-center mt-2">
-                    <div class="col-12 col-sm-6 col-md-4"
-                         v-for="photo in photosSection.photos"
-                         :key="photo.getId()">
-                        <UnsplashCard
-                            :image="photo"
-                        />
-                    </div>
-                </div>
-
-                <p class="my-3 text-dark">
-                    Powered by <a class="text-info" href="https://unsplash.com">Unsplash</a>
-                </p>
-
-                <div class="mt-5 text-end">
-                    <button class="btn me-4 btn-dark"
-                            :disabled="photosSection.page === 1"
-                            @click="pageUnsplash(-1)">
-                        &lt; previous page
-                    </button>
-
-                    <p class="rounded-1 border-dark py-2 px-4 border d-inline-flex me-4">
-                        {{ photosSection.page }}
-                    </p>
-
-                    <button class="btn btn-dark"
-                            @click="pageUnsplash(1)">
-                        next page &gt;
-                    </button>
-                </div>
+                <UnsplashFeed/>
             </div>
 
             <div v-else-if="activeTab === 'feed'">
-                <div v-if="!getIsLoggedIn">
-                    <div class="row g-5 text-center">
-                        <div class="col">
-                            <img
-                                alt="Not logged in animation"
-                                src="/storage/feed-register.gif"
-                            />
-                        </div>
-                        <div class="col align-self-center text-start">
-                            <h4>log in or register to see the feed</h4>
-
-                            <hr/>
-
-                            <router-link class="btn btn-dark me-2" :to="{name: 'login'}">log in</router-link>
-                            <router-link class="btn btn-success" :to="{name: 'register'}">register</router-link>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-5 text-center mt-2">
-                    <div class="col-12 col-sm-6 col-md-4"
-                         v-for="pet in feedData ?? []"
-                         :key="pet.getId()">
-                        <PetCard
-                            :pet-prop="pet"
-                        />
-                    </div>
-                </div>
+                <Feed/>
             </div>
         </div>
 

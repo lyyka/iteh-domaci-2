@@ -10,9 +10,11 @@ export default {
         return res.map(o => new PetResource(o));
     },
 
-    latestPets: async () => {
+    latestPets: async (page = 1) => {
         const route = window.appConfig.api.pets.latestPets;
-        let res = await window.axios.get(route);
+        let res = await window.axios.get(
+            `${route}?page=${page}`
+        );
 
         res = res.data.data;
 

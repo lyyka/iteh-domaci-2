@@ -8,6 +8,7 @@ use App\Services\Dto\PetData;
 use App\Services\Dto\PetSearchData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class PetService
@@ -36,15 +37,14 @@ class PetService
     }
 
     /**
-     * @param int $limit
-     * @return Collection
+     * @param int $perPage
+     * @return LengthAwarePaginator
      */
-    public function getLatestPets(int $limit = 10): Collection
+    public function getLatestPets(int $perPage = 10): LengthAwarePaginator
     {
         return Pet::with('images')
             ->latest()
-            ->limit($limit)
-            ->get();
+            ->paginate($perPage);
     }
 
     /**

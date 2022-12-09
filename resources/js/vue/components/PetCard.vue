@@ -89,11 +89,13 @@ export default {
             </div>
         </div>
 
-        <PetModal
-            ref="petModal"
-            :pet-prop="pet"
-            @saved="onSave"
-        />
+        <div v-if="isEditable">
+            <PetModal
+                ref="petModal"
+                :pet-prop="pet"
+                @saved="onSave"
+            />
+        </div>
     </div>
 </template>
 
