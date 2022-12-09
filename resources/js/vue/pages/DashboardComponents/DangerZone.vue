@@ -1,7 +1,9 @@
 <script>
 import authApi from "@/api/auth";
+import ConfirmDialog from "@/vue/components/ConfirmDialog.vue";
 
 export default {
+    components: {ConfirmDialog},
     methods: {
         async deleteAccount() {
             if (await authApi.deleteAccount()) {
@@ -15,10 +17,15 @@ export default {
 <template>
     <div>
         <h3 class="text-danger mb-4">( danger zone ⚠️ )</h3>
-        <button type="button"
-                @click="deleteAccount"
-                class="btn btn-danger">
-            Delete your account permanently
-        </button>
+
+        <ConfirmDialog
+            id="delete-account-confirmation"
+            @confirmed="deleteAccount"
+        >
+            <button type="button"
+                    class="btn btn-danger">
+                Delete your account permanently
+            </button>
+        </ConfirmDialog>
     </div>
 </template>

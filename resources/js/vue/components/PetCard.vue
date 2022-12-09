@@ -2,9 +2,10 @@
 import PetResource from "@/api/dto/PetResource";
 import petsApi from '@/api/pets.js';
 import PetModal from "@/vue/components/PetModal.vue";
+import ConfirmDialog from "@/vue/components/ConfirmDialog.vue";
 
 export default {
-    components: {PetModal},
+    components: {PetModal, ConfirmDialog},
 
     props: {
         petProp: {
@@ -74,17 +75,24 @@ export default {
 
                 <p class="text-white">{{ pet.getColors().join(', ') }}</p>
 
-                <div class="text-end" v-if="isEditable">
+                <div class="d-flex justify-content-end"
+                     v-if="isEditable">
                     <button type="button"
                             @click="editPet"
                             class="btn btn-dark me-3">
                         edit
                     </button>
-                    <button type="button"
-                            @click="deletePet"
-                            class="btn btn-danger">
-                        delete
-                    </button>
+                    <div>
+                        <ConfirmDialog
+                            :id="`delete-pet-confirmation-${pet.getId()}`"
+                            @confirmed="deletePet"
+                        >
+                            <button type="button"
+                                    class="btn btn-danger">
+                                delete
+                            </button>
+                        </ConfirmDialog>
+                    </div>
                 </div>
             </div>
         </div>
