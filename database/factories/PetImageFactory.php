@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Pet;
+use App\Services\Storage\PetImageStorage;
 use App\Services\Unsplash\UnsplashService;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -47,7 +48,8 @@ class PetImageFactory extends Factory
             Storage::fake('public') :
             Storage::disk('public');
 
-        $disk->put("/pet-images/$fileName", $content);
+        $path = PetImageStorage::IMAGES()->path($fileName);
+        $disk->put($path, $content);
 
         return $this->state(fn(array $attributes) => [
             'filename' => $fileName,

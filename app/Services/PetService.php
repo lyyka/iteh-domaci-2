@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Pet;
 use App\Models\PetImage;
 use App\Services\Dto\PetData;
+use App\Services\Storage\PetImageStorage;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -62,9 +63,10 @@ class PetService
         ], $petData->toArray()))->save();
 
         if ($isNew) {
+            $folder = PetImageStorage::IMAGES();
             $image = new PetImage();
             $image->pet_id = $this->pet->id;
-            $image->filename = basename($petData->getImage()?->store('pet-images', 'public'));
+            $image->filename = basename($petData->getImage()?->store($folder->path(), $folder->disk()));
             $image->save();
         }
 
@@ -76,6 +78,12 @@ class PetService
      */
     public function delete(): void
     {
+        $folder = PetImageStorage::IMAGES();
+        foreach ($this->pet->images as $image) {
+            $folder->diskAdapter()
+                ->delete($folder->path($image->filename));
+        }
+
         $this->pet->delete();
     }
 }
