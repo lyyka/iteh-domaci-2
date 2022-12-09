@@ -1,5 +1,5 @@
 <script>
-import {mapActions, mapState} from 'pinia';
+import {mapState} from 'pinia';
 import {useUserStore} from "@/stores/UserStore";
 import authApi from "@/api/auth";
 
@@ -9,12 +9,9 @@ export default {
     },
 
     methods: {
-        ...mapActions(useUserStore, ['setIsLoggedIn']),
-
-        handleLogout() {
-            const res = authApi.logOut();
+        async handleLogout() {
+            const res = await authApi.logOut();
             if (res) {
-                this.setIsLoggedIn(false);
                 this.$router.push({name: 'home'});
             }
         }

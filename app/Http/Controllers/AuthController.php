@@ -7,7 +7,6 @@ use App\Http\Requests\RegisterRequest;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -48,16 +47,12 @@ class AuthController extends Controller
 
     /**
      * @param Request $request
+     * @param UserService $userService
      * @return JsonResponse
      */
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request, UserService $userService): JsonResponse
     {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
+        $userService->logout($request);
         return response()->json(['success' => true]);
     }
 }

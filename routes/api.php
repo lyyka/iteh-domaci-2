@@ -5,6 +5,7 @@ use App\Http\Controllers\PetColorController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\PetTypeController;
 use App\Http\Controllers\UnsplashApiController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,11 @@ Route::middleware(['guest:sanctum', ForceJsonResponse::class])->group(function (
 Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('api.users.logout');
+
+    Route::prefix('/user')->group(function () {
+        Route::delete('/delete', [UserController::class, 'delete'])
+            ->name('api.users.delete');
+    });
 
     Route::prefix('/pet-types')->group(function () {
         Route::get('/all', [PetTypeController::class, 'all'])

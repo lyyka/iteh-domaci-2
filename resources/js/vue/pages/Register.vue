@@ -20,10 +20,10 @@ export default {
     methods: {
         ...mapActions(useUserStore, ['setIsLoggedIn']),
 
-        register() {
+        async register() {
             this.errorMessage = null;
 
-            const res = authApi.register(new RegisterData(
+            const res = await authApi.register(new RegisterData(
                 this.form.name,
                 this.form.email,
                 this.form.password

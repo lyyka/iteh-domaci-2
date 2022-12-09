@@ -19,8 +19,8 @@ export default {
     methods: {
         ...mapActions(useUserStore, ['setIsLoggedIn']),
 
-        handleLogin() {
-            const loggedIn = authApi.login(new LoginData(
+        async handleLogin() {
+            const loggedIn = await authApi.login(new LoginData(
                 this.form.email,
                 this.form.password
             ));

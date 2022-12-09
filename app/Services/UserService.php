@@ -4,12 +4,19 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Services\Dto\UserRegisterData;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\NewAccessToken;
 
 class UserService
 {
     private ?User $user = null;
+
+    public function __construct(
+        private PetService $petService,
+    )
+    {
+    }
 
     /**
      * @param User|null $user
@@ -24,7 +31,7 @@ class UserService
     /**
      * @return NewAccessToken
      */
-    public function issueToken() : NewAccessToken
+    public function issueToken(): NewAccessToken
     {
         return $this->user->createToken('auth');
     }
@@ -33,7 +40,7 @@ class UserService
      * @param UserRegisterData $registerData
      * @return User
      */
-    public function register(UserRegisterData $registerData) : User
+    public function register(UserRegisterData $registerData): User
     {
         $user = new User();
         $user->fill($registerData->toArray());
@@ -49,13 +56,31 @@ class UserService
      * @param User|array $credentials
      * @return bool
      */
-    public function login(User|array $credentials) : bool
+    public function login(User|array $credentials): bool
     {
-        if(is_array($credentials)) {
+        if (is_array($credentials)) {
             return Auth::attempt($credentials);
         }
 
         Auth::login($credentials);
         return Auth::check();
+    }
+
+    public function logout(Request $request): void
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+    }
+
+    public function delete(): void
+    {
+        foreach ($this->user->pets as $pet) {
+            $this->petService->setPet($pet)->delete();
+        }
+
+        $this->user->delete();
     }
 }
