@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PetColorController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\PetTypeController;
+use App\Http\Controllers\UnsplashApiController;
 use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('/unsplash')->group(function () {
+    Route::get('/search', [UnsplashApiController::class, 'search'])
+        ->name('api.unsplash.search');
+});
 
 Route::middleware(['guest:sanctum', ForceJsonResponse::class])->group(function () {
     Route::prefix('/user')->group(function () {

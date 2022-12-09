@@ -9,7 +9,6 @@ class PetType
     const BIRD = 'bird';
     const FISH = 'fish';
     const TURTLE = 'turtle';
-    const PORPOISE = 'porpoise';
 
     public static function all(): array
     {
@@ -19,7 +18,6 @@ class PetType
             self::BIRD,
             self::FISH,
             self::TURTLE,
-            self::PORPOISE,
         ];
     }
 }

@@ -34,9 +34,8 @@
                 petColor: {
                     all: '{{ route('api.pet-colors.all') }}'
                 },
-                unsplashPhotoSearch: 'https://api.unsplash.com/search/photos/'
+                unsplashPhotoSearch: '{{ route('api.unsplash.search') }}'
             },
-            unsplashApiKey: '{{ config('app.unsplashApiKey') }}'
         }
 
         window.isLoggedIn = {{ \Illuminate\Support\Facades\Auth::check() ? 'true' : 'false' }};
