@@ -9,10 +9,9 @@ import petTypesApi from './api/petType.js';
 import petColorsApi from './api/petColor.js';
 
 const app = createApp(App);
-const pinia = createPinia();
 
 app.use(router);
-app.use(pinia);
+app.use(createPinia());
 
 app.config.globalProperties.$isLoggedIn = window.isLoggedIn;
 app.config.globalProperties.$appConfig = window.appConfig;

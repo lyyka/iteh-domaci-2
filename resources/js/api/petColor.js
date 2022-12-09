@@ -1,10 +1,14 @@
 import PetColorResource from "@/api/dto/PetColorResource";
+import {useUserStore} from "@/stores/UserStore";
 
 export default {
     all: async () => {
         const route = window.appConfig.api.petColor.all;
-        let res = await window.axios.get(route);
+        const userStore = useUserStore();
 
-        return res.data.map(o => new PetColorResource(o));
+        const res = userStore.getIsLoggedIn ?
+            await window.axios.get(route) : [];
+
+        return res.map(o => new PetColorResource(o));
     },
 };
