@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Services\Dto\UserRegisterData;
+use App\Services\Dto\UserUpdateData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\NewAccessToken;
@@ -50,6 +51,18 @@ class UserService
         $this->setUser($user);
 
         return $user;
+    }
+
+    /**
+     * @param UserUpdateData $updateData
+     * @return User
+     */
+    public function update(UserUpdateData $updateData): User
+    {
+        $this->user->fill($updateData->toArray());
+        $this->user->save();
+
+        return $this->user;
     }
 
     /**

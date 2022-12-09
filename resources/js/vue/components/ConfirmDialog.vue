@@ -26,9 +26,9 @@ export default {
             this.close();
             this.$emit('confirmed');
         },
+    },
 
-        emits: ['confirmed'],
-    }
+    emits: ['confirmed'],
 }
 </script>
 <template>
@@ -58,12 +58,12 @@ export default {
                         <h5 class="modal-title">confirm action</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to proceed?</p>
+                    <div class="modal-body text-start">
+                        <p>are you sure you want to proceed? 🤨</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">no</button>
-                        <button @click="confirm" type="button" class="btn btn-success">yes</button>
+                        <button @click="confirm" type="button" class="btn btn-danger">yes, i am</button>
                     </div>
                 </div>
             </div>

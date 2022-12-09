@@ -1,9 +1,8 @@
 <script>
 import MyPets from "@/vue/pages/DashboardComponents/MyPets.vue";
-import DangerZone from "@/vue/pages/DashboardComponents/DangerZone.vue";
 
 export default {
-    components: {DangerZone, MyPets},
+    components: {MyPets},
 }
 </script>
 <template>
@@ -15,7 +14,11 @@ export default {
         </div>
 
         <div class="mb-5">
-            <DangerZone/>
+            <h3 class="me-3 mb-3">( account 💖 )</h3>
+
+            <router-link class="btn btn-dark" :to="{name: 'account'}">
+                manage your account ->
+            </router-link>
         </div>
     </div>
 </template>

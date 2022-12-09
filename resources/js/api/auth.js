@@ -1,4 +1,5 @@
 import {useUserStore} from "@/stores/UserStore";
+import AuthUser from "@/api/dto/AuthUser";
 
 export default {
     deleteAccount: async () => {
@@ -12,10 +13,48 @@ export default {
         } catch (e) {
             success = false;
         }
-        
+
         userStore.setIsLoggedIn(!success);
 
         return success;
+    },
+
+    /**
+     * @param {UpdateUserData} updateUserData
+     * @returns {Promise<Object>}
+     */
+    updateAccount: async (updateUserData) => {
+        const route = window.appConfig.api.updateUser;
+
+        let authUser = null;
+        let errors = [];
+
+        try {
+            const res = await window.axios.put(route, updateUserData.toRequest());
+            authUser = new AuthUser(res.data.data);
+        } catch (e) {
+            if (e.response?.status === 422) {
+                errors = e.response.data.errors;
+            }
+        }
+
+        return {authUser, errors};
+    },
+
+    /**
+     * @returns {Promise<AuthUser>}
+     */
+    getAuthUser: async () => {
+        const route = window.appConfig.api.getAuthUser;
+
+        let result = null;
+        try {
+            const res = await window.axios.get(route);
+            result = new AuthUser(res.data.data);
+        } catch (e) {
+        }
+
+        return result;
     },
 
     /**

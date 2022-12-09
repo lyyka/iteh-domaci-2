@@ -23,4 +23,5 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth:web')->group(function () {
     Route::get('/dashboard', [AppPageController::class, 'show'])->name('web.users.dashboard');
+    Route::get('/account', [AppPageController::class, 'show'])->name('web.users.account');
 });

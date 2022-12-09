@@ -21,6 +21,8 @@
                 register: '{{ route('api.users.register') }}',
                 logout: '{{ route('api.users.logout') }}',
                 deleteUser: '{{ route('api.users.delete') }}',
+                updateUser: '{{ route('api.users.update') }}',
+                getAuthUser: '{{ route('api.users.get-auth') }}',
                 pets: {
                     latestPets: '{{ route('api.pets.latest-pets') }}',
                     myPets: '{{ route('api.pets.my-pets') }}',
