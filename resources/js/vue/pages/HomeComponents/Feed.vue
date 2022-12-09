@@ -14,7 +14,6 @@ export default {
     data() {
         return {
             feedData: null,
-            page: 1,
         };
     },
 
@@ -23,18 +22,19 @@ export default {
     },
 
     methods: {
-        async loadFeed(page = 1) {
+        async loadFeed() {
+            const page = this.feedData?.getCurrentPage() ?? 1;
             this.feedData = await petsApi.latestPets(page);
         },
 
-        async pageChange(change) {
-            this.page += change;
+        async nextPage() {
+            this.feedData.next();
+            await this.loadFeed();
+        },
 
-            if (this.page === 0) {
-                this.page = 1;
-            }
-
-            await this.loadFeed(this.page);
+        async previousPage() {
+            this.feedData.previous();
+            await this.loadFeed();
         },
     }
 }
@@ -62,7 +62,7 @@ export default {
 
         <div class="row g-5 text-center mt-2">
             <div class="col-12 col-sm-6 col-md-4"
-                 v-for="pet in feedData ?? []"
+                 v-for="pet in feedData?.getResources()"
                  :key="pet.getId()">
                 <PetCard
                     :pet-prop="pet"
@@ -72,17 +72,18 @@ export default {
 
         <div class="mt-5 text-end">
             <button class="btn me-4 btn-dark"
-                    :disabled="page === 1"
-                    @click="pageChange(-1)">
+                    :disabled="feedData?.isStart()"
+                    @click="previousPage">
                 &lt; previous page
             </button>
 
             <p class="rounded-1 border-dark py-2 px-4 border d-inline-flex me-4">
-                {{ page }}
+                {{ feedData?.getCurrentPage() }}
             </p>
 
             <button class="btn btn-dark"
-                    @click="pageChange(1)">
+                    :disabled="!feedData?.hasMore()"
+                    @click="nextPage">
                 next page &gt;
             </button>
         </div>

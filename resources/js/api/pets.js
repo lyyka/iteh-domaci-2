@@ -1,4 +1,5 @@
 import PetResource from "@/api/dto/PetResource";
+import PaginatedResource from "@/api/dto/PaginatedResource";
 
 export default {
     myPets: async () => {
@@ -16,9 +17,10 @@ export default {
             `${route}?page=${page}`
         );
 
-        res = res.data.data;
-
-        return res.map(o => new PetResource(o));
+        return new PaginatedResource(
+            res.data.data.map(o => new PetResource(o)),
+            res.data.meta
+        );
     },
 
     search: async (query, petType = null) => {
