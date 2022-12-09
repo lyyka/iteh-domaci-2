@@ -2,6 +2,8 @@
 import PetResource from "@/api/dto/PetResource";
 import {mapState} from "pinia";
 import {usePetDataStore} from "@/stores/PetDataStore";
+import petsApi from "@/api/pets";
+import PetUpdateData from "@/api/dto/PetUpdateData";
 
 export default {
     props: {
@@ -68,36 +70,26 @@ export default {
             this.$refs.closeCreatePetModal.click();
         },
 
-        save() {
+        async save() {
             this.formErrors = {};
 
-            const headers = {
-                'Accept': 'application/json',
-            };
+            const data = new PetUpdateData(
+                this.pet?.getId(),
+                this.form.name,
+                this.form.type,
+                this.form.colors,
+                this.form.date_of_birth,
+                this.form.image
+            );
 
-            if (!this.pet) headers['Content-Type'] = 'multipart/form-data';
+            const {success, errors} = await petsApi.update(data);
 
-            const promise = this.pet ?
-                window.axios.put(this.$appConfig.api.pets.update, {
-                    ...this.form,
-                    image: null,
-                    pet_id: this.pet.getId(),
-                }, {headers}) :
-                window.axios.post(this.$appConfig.api.pets.store, this.form, {headers});
-
-            promise
-                .then(r => {
-                    if (r.status === 201 || r.status === 200) {
-                        this.close();
-                        this.$emit('saved');
-                    }
-                })
-                .catch(e => {
-                    console.log(e.response.data.errors);
-                    if (e.response?.status === 422) {
-                        this.formErrors = e.response.data.errors;
-                    }
-                });
+            if (success) {
+                this.close();
+                this.$emit('saved');
+            } else {
+                this.formErrors = errors;
+            }
         },
     }
 }

@@ -1,7 +1,7 @@
 export default {
     /**
      * @param {LoginData} loginData
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
     login: async (loginData) => {
         const route = window.appConfig.api.login;
@@ -20,7 +20,7 @@ export default {
     /**
      *
      * @param {RegisterData} registerData
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
     register: async (registerData) => {
         const route = window.appConfig.api.register;
@@ -37,7 +37,7 @@ export default {
     },
 
     /**
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
     logOut: async () => {
         const route = window.appConfig.api.logout;
