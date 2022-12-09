@@ -3,6 +3,7 @@ import LogIn from './pages/LogIn.vue';
 import Register from './pages/Register.vue';
 import Dashboard from './pages/Dashboard.vue';
 import * as VueRouter from 'vue-router';
+import {useUserStore} from "@/stores/UserStore";
 
 const routes = [
     {path: '/', name: 'home', component: Home},
@@ -17,9 +18,10 @@ const router = VueRouter.createRouter({
 });
 
 router.beforeEach(async (to, from) => {
+    const userStore = useUserStore();
     const guestOnlyRouteNames = ['login', 'register'];
     if (
-        window.isLoggedIn && guestOnlyRouteNames.includes(to.name)
+        userStore.getIsLoggedIn && guestOnlyRouteNames.includes(to.name)
     ) {
         return {name: 'dashboard'}
     }
