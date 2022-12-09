@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Models\Pet;
 use App\Models\PetImage;
 use App\Services\Dto\PetData;
-use App\Services\Dto\PetSearchData;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -45,26 +43,6 @@ class PetService
         return Pet::with('images')
             ->latest()
             ->paginate($perPage);
-    }
-
-    /**
-     * @param PetSearchData $petSearchData
-     * @return Collection
-     */
-    public function search(PetSearchData $petSearchData): Collection
-    {
-        $res = Pet::query()
-            ->where(function (Builder $builder) use ($petSearchData) {
-                $search = "%{$petSearchData->getQuery()}%";
-                $builder->where('name', 'like', $search)
-                    ->orWhere('type', 'like', $search);
-            });
-
-        if ($type = $petSearchData->getType()) {
-            $res = $res->where('type', $type);
-        }
-
-        return $res->get();
     }
 
     /**

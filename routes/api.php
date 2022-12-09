@@ -52,8 +52,6 @@ Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function ()
             ->name('api.pets.latest-pets');
         Route::get('/my-pets', [PetController::class, 'myPets'])
             ->name('api.pets.my-pets');
-        Route::get('/search', [PetController::class, 'search'])
-            ->name('api.pets.search');
         Route::post('/create', [PetController::class, 'create'])
             ->name('api.pets.create');
         Route::put('/update', [PetController::class, 'update'])

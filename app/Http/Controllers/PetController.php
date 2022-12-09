@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PetSearchRequest;
 use App\Http\Requests\PetStoreRequest;
 use App\Http\Requests\PetUpdateRequest;
 use App\Http\Resources\PetResource;
@@ -34,18 +33,6 @@ class PetController extends Controller
     public function myPets(Request $request, PetService $petService): AnonymousResourceCollection
     {
         $pets = $petService->getAuthUsersPets();
-        return PetResource::collection($pets);
-    }
-
-    /**
-     * @param PetSearchRequest $request
-     * @param PetService $petService
-     * @return AnonymousResourceCollection
-     */
-    public function search(PetSearchRequest $request, PetService $petService): AnonymousResourceCollection
-    {
-        $pets = $petService->search($request->toSearchData());
-
         return PetResource::collection($pets);
     }
 

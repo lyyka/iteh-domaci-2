@@ -23,17 +23,6 @@ export default {
         );
     },
 
-    search: async (query, petType = null) => {
-        const route = window.appConfig.api.pets.search;
-        let res = await window.axios.get(
-            `${route}?query=${query}&type=${petType}`,
-        );
-
-        res = res.data.data;
-
-        return res.map(o => new PetResource(o));
-    },
-
     delete: async (pet) => {
         const route = window.appConfig.api.pets.delete;
 

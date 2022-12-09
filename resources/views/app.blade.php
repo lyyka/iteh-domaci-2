@@ -23,7 +23,6 @@
                 pets: {
                     latestPets: '{{ route('api.pets.latest-pets') }}',
                     myPets: '{{ route('api.pets.my-pets') }}',
-                    search: '{{ route('api.pets.search') }}',
                     store: '{{ route('api.pets.create') }}',
                     update: '{{ route('api.pets.update') }}',
                     delete: '{{ route('api.pets.delete') }}',
