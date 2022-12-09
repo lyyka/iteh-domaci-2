@@ -1,6 +1,8 @@
 <script>
 import {mapActions} from "pinia/dist/pinia";
 import {useUserStore} from "@/stores/UserStore";
+import LoginData from "@/api/dto/LoginData";
+import authApi from "@/api/auth";
 
 export default {
     data() {
@@ -17,16 +19,18 @@ export default {
     methods: {
         ...mapActions(useUserStore, ['setIsLoggedIn']),
 
-        login() {
-            window.axios.post(this.$appConfig.api.login, this.form)
-                .then((res) => {
-                    if (res.data.success) {
-                        this.setIsLoggedIn(true);
-                        this.$router.push({name: 'dashboard'});
-                    } else {
-                        this.errorMessage = 'Login failed.';
-                    }
-                }).catch(() => this.errorMessage = 'Login failed.');
+        handleLogin() {
+            const loggedIn = authApi.login(new LoginData(
+                this.form.email,
+                this.form.password
+            ));
+
+            if (loggedIn) {
+                this.setIsLoggedIn(true);
+                this.$router.push({name: 'dashboard'});
+            } else {
+                this.errorMessage = 'Login failed.'
+            }
         }
     }
 };
@@ -54,7 +58,7 @@ export default {
                        placeholder="password">
             </div>
 
-            <button class="btn btn-dark" type="button" @click="login">
+            <button class="btn btn-dark" type="button" @click="handleLogin">
                 log in
             </button>
         </form>

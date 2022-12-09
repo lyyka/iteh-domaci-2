@@ -7,14 +7,15 @@ import 'bootstrap/dist/js/bootstrap.min';
 import {usePetDataStore} from './stores/PetDataStore';
 import petTypesApi from './api/petType.js';
 import petColorsApi from './api/petColor.js';
+import {useUserStore} from "@/stores/UserStore";
 
 const app = createApp(App);
 
 app.use(router);
 app.use(createPinia());
 
-app.config.globalProperties.$isLoggedIn = window.isLoggedIn;
-app.config.globalProperties.$appConfig = window.appConfig;
+const userStore = useUserStore();
+userStore.setIsLoggedIn(window.isLoggedIn);
 
 const petDataStore = usePetDataStore();
 petDataStore.setPetColorOptions(await petColorsApi.all());

@@ -1,6 +1,8 @@
 <script>
 import {mapActions} from "pinia/dist/pinia";
 import {useUserStore} from "@/stores/UserStore";
+import authApi from "@/api/auth";
+import RegisterData from "@/api/dto/RegisterData";
 
 export default {
     data() {
@@ -20,15 +22,19 @@ export default {
 
         register() {
             this.errorMessage = null;
-            window.axios.post(this.$appConfig.api.register, this.form)
-                .then((res) => {
-                    if (res.data.success) {
-                        this.setIsLoggedIn(true);
-                        this.$router.push({name: 'dashboard'});
-                    } else {
-                        this.errorMessage = 'Registration failed.';
-                    }
-                }).catch(() => this.errorMessage = 'Registration failed.');
+
+            const res = authApi.register(new RegisterData(
+                this.form.name,
+                this.form.email,
+                this.form.password
+            ));
+
+            if (res) {
+                this.setIsLoggedIn(true);
+                this.$router.push({name: 'dashboard'});
+            } else {
+                this.errorMessage = 'Registration failed.';
+            }
         }
     }
 };

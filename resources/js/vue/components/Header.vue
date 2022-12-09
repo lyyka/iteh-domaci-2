@@ -1,6 +1,7 @@
 <script>
 import {mapActions, mapState} from 'pinia';
 import {useUserStore} from "@/stores/UserStore";
+import authApi from "@/api/auth";
 
 export default {
     computed: {
@@ -10,14 +11,12 @@ export default {
     methods: {
         ...mapActions(useUserStore, ['setIsLoggedIn']),
 
-        logout() {
-            window.axios.post(this.$appConfig.api.logout)
-                .then(res => {
-                    if (res.data.success) {
-                        this.setIsLoggedIn(false);
-                        this.$router.push({name: 'home'});
-                    }
-                });
+        handleLogout() {
+            const res = authApi.logOut();
+            if (res) {
+                this.setIsLoggedIn(false);
+                this.$router.push({name: 'home'});
+            }
         }
     }
 }
@@ -50,7 +49,7 @@ export default {
                             <router-link class="btn btn-success" :to="{name: 'dashboard'}">dashboard</router-link>
                         </li>
                         <li v-if="getIsLoggedIn">
-                            <a href="#" @click="logout" class="text-dark">log out</a>
+                            <a href="#" @click="handleLogout" class="text-dark">log out</a>
                         </li>
                     </ul>
                 </div>

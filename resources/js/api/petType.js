@@ -8,8 +8,8 @@ export default {
         const route = window.appConfig.api.petType.all;
 
         const res = userStore.getIsLoggedIn ?
-            await window.axios.get(route) : [];
+            await window.axios.get(route) : {data: []};
 
-        return res.map(o => new PetTypeResource(o));
+        return res.data.map(o => new PetTypeResource(o));
     },
 };

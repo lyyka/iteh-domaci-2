@@ -7,8 +7,8 @@ export default {
         const userStore = useUserStore();
 
         const res = userStore.getIsLoggedIn ?
-            await window.axios.get(route) : [];
+            await window.axios.get(route) : {data: []};
 
-        return res.map(o => new PetColorResource(o));
+        return res.data.map(o => new PetColorResource(o));
     },
 };
