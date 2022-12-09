@@ -21,7 +21,7 @@ export default {
 
     /**
      * @param {UpdateUserData} updateUserData
-     * @returns {Promise<Object>}
+     * @returns {Promise<{authUser: AuthUser, errors: Array}>}
      */
     updateAccount: async (updateUserData) => {
         const route = window.appConfig.api.updateUser;
@@ -59,39 +59,49 @@ export default {
 
     /**
      * @param {LoginData} loginData
-     * @returns {Promise<boolean>}
+     * @returns {Promise<{success: boolean, errors: Array}>}
      */
     login: async (loginData) => {
         const route = window.appConfig.api.login;
 
         let success;
+        let errors = [];
+
         try {
             const res = await window.axios.post(route, loginData.toRequest());
             success = res.data.success;
         } catch (e) {
+            if (e.response?.status === 422) {
+                errors = e.response.data.errors;
+            }
             success = false;
         }
 
-        return success;
+        return {success, errors};
     },
 
     /**
      *
      * @param {RegisterData} registerData
-     * @returns {Promise<boolean>}
+     * @returns {Promise<{success: boolean, errors: Array}>}
      */
     register: async (registerData) => {
         const route = window.appConfig.api.register;
 
         let success;
+        let errors = [];
+
         try {
             const res = await window.axios.post(route, registerData.toRequest());
             success = res.data.success;
         } catch (e) {
+            if (e.response?.status === 422) {
+                errors = e.response.data.errors;
+            }
             success = false;
         }
 
-        return success;
+        return {success, errors};
     },
 
     /**

@@ -12,7 +12,8 @@ export default {
                 password: null,
             },
 
-            errorMessage: null,
+            formErrors: {},
+            generalLoginError: null,
         };
     },
 
@@ -20,16 +21,23 @@ export default {
         ...mapActions(useUserStore, ['setIsLoggedIn']),
 
         async handleLogin() {
-            const loggedIn = await authApi.login(new LoginData(
+            this.formErrors = {};
+            this.generalLoginError = null;
+
+            const {success, errors} = await authApi.login(new LoginData(
                 this.form.email,
                 this.form.password
             ));
 
-            if (loggedIn) {
+            if (success) {
                 this.setIsLoggedIn(true);
                 this.$router.push({name: 'dashboard'});
             } else {
-                this.errorMessage = 'Login failed.'
+                if (Object.keys(errors).length > 0) {
+                    this.formErrors = errors;
+                } else {
+                    this.generalLoginError = 'log in failed. try again!';
+                }
             }
         }
     }
@@ -37,8 +45,8 @@ export default {
 </script>
 <template>
     <div class="container mt-5">
-        <div v-if="errorMessage" class="alert alert-danger" role="alert">
-            {{ errorMessage }}
+        <div v-if="generalLoginError" class="alert alert-danger" role="alert">
+            {{ generalLoginError }}
         </div>
 
         <h1>log in</h1>
@@ -49,6 +57,10 @@ export default {
                 <input type="email" class="form-control" id="email" v-model="form.email"
                        autocomplete="email"
                        placeholder="example@email.com">
+                <div v-bind:style="formErrors.email ? 'display: block;' : ''"
+                     class="invalid-feedback">
+                    {{ formErrors.email ? formErrors.email[0] : '' }}
+                </div>
             </div>
 
             <div class="mb-3">
@@ -56,6 +68,10 @@ export default {
                 <input type="password" autocomplete="current-password" v-model="form.password" class="form-control"
                        id="password"
                        placeholder="password">
+                <div v-bind:style="formErrors.password ? 'display: block;' : ''"
+                     class="invalid-feedback">
+                    {{ formErrors.password ? formErrors.password[0] : '' }}
+                </div>
             </div>
 
             <button class="btn btn-dark" type="button" @click="handleLogin">
