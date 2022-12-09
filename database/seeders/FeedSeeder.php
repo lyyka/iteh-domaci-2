@@ -18,7 +18,9 @@ class FeedSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = UserFactory::new()->count(10)->create();
+        $mainUser = UserFactory::new()->create(['email' => 'user@user.com']);
+        $users = UserFactory::new()->count(9)->create();
+        $users->add($mainUser);
 
         foreach ($users as $user) {
             $pets = PetFactory::new()
