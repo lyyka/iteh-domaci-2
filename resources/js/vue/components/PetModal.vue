@@ -1,7 +1,7 @@
 <script>
-import petTypesApi from '@/api/petType.js';
-import petColorsApi from '@/api/petColor.js';
 import PetResource from "@/api/dto/PetResource";
+import {mapState} from "pinia";
+import {usePetDataStore} from "@/stores/PetDataStore";
 
 export default {
     props: {
@@ -12,11 +12,13 @@ export default {
         },
     },
 
+    computed: {
+        ...mapState(usePetDataStore, ['getPetColorOptions', 'getPetTypesOptions']),
+    },
+
     data() {
         return {
             pet: null,
-            petTypes: [],
-            colors: [],
             form: {
                 pet_id: null,
                 name: null,
@@ -27,11 +29,6 @@ export default {
             },
             formErrors: {},
         };
-    },
-
-    async mounted() {
-        this.petTypes = await petTypesApi.all();
-        this.colors = await petColorsApi.all();
     },
 
     emits: ['saved'],
@@ -159,7 +156,7 @@ export default {
                                 <span class="text-danger">*</span> type</label>
                             <select class="form-control" id="type" v-model="form.type">
                                 <option
-                                    v-for="type in petTypes"
+                                    v-for="type in getPetTypesOptions"
                                     :key="type.getValue()"
                                     :value="type.getValue()">{{ type.getLabel() }}
                                 </option>
@@ -175,7 +172,7 @@ export default {
                                 <span class="text-danger">*</span> color(s)</label>
                             <div class="row container g-3">
                                 <div class="form-check col-6 col-md-4"
-                                     v-for="color in colors"
+                                     v-for="color in getPetColorOptions"
                                      :key="color">
                                     <input class="form-check-input" type="checkbox"
                                            name="colors[]"
