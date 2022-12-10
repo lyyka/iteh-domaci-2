@@ -9,6 +9,7 @@ export default {
         return {
             form: {
                 name: null,
+                username: null,
                 email: null,
                 password: null,
             },
@@ -25,6 +26,7 @@ export default {
 
             const {success, errors} = await authApi.register(new RegisterData(
                 this.form.name,
+                this.form.username,
                 this.form.email,
                 this.form.password
             ));
@@ -52,6 +54,17 @@ export default {
                 <div v-bind:style="formErrors.name ? 'display: block;' : ''"
                      class="invalid-feedback">
                     {{ formErrors.name ? formErrors.name[0] : '' }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">username</label>
+                <input type="text" class="form-control" id="name" v-model="form.username"
+                       autocomplete="username"
+                       placeholder="@username">
+                <div v-bind:style="formErrors.username ? 'display: block;' : ''"
+                     class="invalid-feedback">
+                    {{ formErrors.username ? formErrors.username[0] : '' }}
                 </div>
             </div>
 

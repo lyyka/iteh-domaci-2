@@ -1,4 +1,5 @@
 import PetImageResource from "./PetImageResource";
+import UserProfile from "@/api/dto/UserProfile";
 
 export default class PetResource {
     constructor(pet) {
@@ -21,12 +22,25 @@ export default class PetResource {
         return this.pet.colors;
     }
 
+    /**
+     * @returns {Array<PetImageResource>}
+     */
     getImages() {
         const images = this.pet.images;
 
         return images.map(o => new PetImageResource(o));
     }
 
+    /**
+     * @returns {UserProfile}
+     */
+    getUser() {
+        return new UserProfile(this.pet.user);
+    }
+
+    /**
+     * @returns {PetImageResource}
+     */
     getFirstImage() {
         const all = this.getImages();
 
@@ -37,6 +51,9 @@ export default class PetResource {
         return null;
     }
 
+    /**
+     * @returns {null|string|*}
+     */
     getDateOfBirth() {
         return this.pet.date_of_birth;
     }

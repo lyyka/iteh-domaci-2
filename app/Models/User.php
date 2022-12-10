@@ -13,7 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email'
+        'name', 'email', 'username',
     ];
 
     protected $hidden = [
@@ -21,8 +21,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function pets() : HasMany
+    public function pets(): HasMany
     {
-        return $this->hasMany(Pet::class);
+        return $this->hasMany(Pet::class)->latest();
     }
 }

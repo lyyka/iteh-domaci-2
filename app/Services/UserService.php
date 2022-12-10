@@ -30,6 +30,15 @@ class UserService
     }
 
     /**
+     * @param string $username
+     * @return User|null
+     */
+    public function getByUsername(string $username): ?User
+    {
+        return User::whereUsername($username)->first();
+    }
+
+    /**
      * @return NewAccessToken
      */
     public function issueToken(): NewAccessToken

@@ -25,6 +25,7 @@ class PetResource extends JsonResource
             'type' => $this->type,
             'colors' => $this->colors,
             'images' => PetImageResource::collection($this->images),
+            'user' => new UserProfileResource($this->user, false),
             'date_of_birth' => $this->date_of_birth,
         ];
     }

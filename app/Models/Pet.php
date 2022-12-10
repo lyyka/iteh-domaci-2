@@ -24,6 +24,6 @@ class Pet extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(PetImage::class);
+        return $this->hasMany(PetImage::class)->latest();
     }
 }

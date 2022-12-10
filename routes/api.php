@@ -39,6 +39,8 @@ Route::middleware(['auth:sanctum', ForceJsonResponse::class])->group(function ()
         ->name('api.users.logout');
 
     Route::prefix('/user')->group(function () {
+        Route::get('/get-profile-by-username', [UserController::class, 'getProfileByUsername'])
+            ->name('api.users.get-profile-by-username');
         Route::put('/update', [UserController::class, 'update'])
             ->name('api.users.update');
         Route::get('/get-auth', [UserController::class, 'getAuth'])

@@ -11,6 +11,10 @@ export default class AuthUser {
         return this.userResource.name;
     }
 
+    getUsername() {
+        return this.userResource.username;
+    }
+
     getEmail() {
         return this.userResource.email;
     }

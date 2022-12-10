@@ -9,8 +9,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin User
  */
-class UserResource extends JsonResource
+class UserProfileResource extends JsonResource
 {
+    private bool $withPets;
+
+    public function __construct($resource, bool $withPets = true)
+    {
+        $this->withPets = $withPets;
+        parent::__construct($resource);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -19,11 +27,14 @@ class UserResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
+        $data = [
             'username' => $this->username,
-            'email' => $this->email,
         ];
+
+        if ($this->withPets) {
+            $data['pets'] = PetResource::collection($this->pets);
+        }
+
+        return $data;
     }
 }

@@ -28,15 +28,17 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', Rule::unique('users','email')],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')],
+            'email' => ['required', 'string', 'email', Rule::unique('users', 'email')],
             'password' => ['required', 'string', 'max:255', Password::default()],
         ];
     }
 
-    public function toRegisterData() : UserRegisterData
+    public function toRegisterData(): UserRegisterData
     {
         return new UserRegisterData(
             $this->input('name'),
+            $this->input('username'),
             $this->input('email'),
             $this->input('password')
         );

@@ -1,5 +1,6 @@
 import {useUserStore} from "@/stores/UserStore";
 import AuthUser from "@/api/dto/AuthUser";
+import UserProfile from "@/api/dto/UserProfile";
 
 export default {
     deleteAccount: async () => {
@@ -52,6 +53,23 @@ export default {
             const res = await window.axios.get(route);
             result = new AuthUser(res.data.data);
         } catch (e) {
+        }
+
+        return result;
+    },
+
+    /**
+     * @returns {Promise<UserProfile>}
+     */
+    getProfileByUsername: async (username) => {
+        const route = window.appConfig.api.getProfileByUsername;
+
+        let result = null;
+        try {
+            const res = await window.axios.get(`${route}?username=${username}`);
+            result = new UserProfile(res.data.data);
+        } catch (e) {
+            console.log(e.response.data.errors);
         }
 
         return result;

@@ -14,6 +14,8 @@ export default {
                 email: null,
             },
             formErrors: {},
+            successMessage: 'update was successful!',
+            showSuccess: false,
         };
     },
 
@@ -27,12 +29,17 @@ export default {
         async handleUpdate() {
             this.formErrors = {};
 
-            const {resultingUser, errors} = await authApi.updateAccount(new UpdateUserData(
+            const {authUser, errors} = await authApi.updateAccount(new UpdateUserData(
                 this.form.name, this.form.email
             ));
 
-            if (resultingUser) {
-                this.authUser = resultingUser;
+            if (authUser) {
+                this.authUser = authUser;
+                this.showSuccess = true;
+
+                window.setTimeout(() => {
+                    this.showSuccess = false;
+                }, 1500);
             } else {
                 this.formErrors = errors;
             }
@@ -46,10 +53,14 @@ export default {
             &lt; back to dashboard
         </router-link>
 
-        <h1>hello <span class="text-decoration-underline">{{ authUser.getName() }}</span> 👋</h1>
+        <h1>hello <span class="text-decoration-underline">@{{ authUser.getUsername() }}</span> 👋</h1>
 
         <div class="mt-5 mb-5">
             <h3 class="me-3 mb-3">( info ✨ )</h3>
+
+            <div v-if="showSuccess" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
 
             <form>
                 <div class="mb-3">

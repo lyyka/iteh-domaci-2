@@ -67,7 +67,13 @@ export default {
             <div class="pet-card--content
             text-center
             rounded-2 bg-dark py-3 px-2 bg-opacity-75">
-                <p class="text-white">{{ pet.getName() }}</p>
+                <p class="text-white">
+                    <router-link :to="{name: 'userProfile', params: {username: pet.getUser().getUsername() }}"
+                                 class="text-info">
+                        @{{ pet.getUser().getUsername() }}
+                    </router-link>
+                    - {{ pet.getName() }}
+                </p>
 
                 <hr/>
 

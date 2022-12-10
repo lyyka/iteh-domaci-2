@@ -4,14 +4,16 @@ import LogIn from '@/vue/pages/LogIn.vue';
 import Register from '@/vue/pages/Register.vue';
 import Dashboard from '@/vue/pages/Dashboard.vue';
 import Account from '@/vue/pages/Account.vue';
+import UserProfile from '@/vue/pages/UserProfile.vue';
 import {useUserStore} from "@/stores/UserStore";
 
 const routes = [
     {path: '/', name: 'home', component: Home},
-    {path: '/login', name: 'login', component: LogIn},
-    {path: '/register', name: 'register', component: Register},
-    {path: '/dashboard', name: 'dashboard', component: Dashboard},
-    {path: '/account', name: 'account', component: Account},
+    {path: '/auth/login', name: 'login', component: LogIn},
+    {path: '/auth/register', name: 'register', component: Register},
+    {path: '/auth/dashboard', name: 'dashboard', component: Dashboard},
+    {path: '/auth/account', name: 'account', component: Account},
+    {path: '/:username', name: 'userProfile', component: UserProfile},
 ];
 
 const router = VueRouter.createRouter({

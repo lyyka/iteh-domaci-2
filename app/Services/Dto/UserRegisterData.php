@@ -8,14 +8,18 @@ class UserRegisterData
 {
     public function __construct(
         private string $name,
+        private string $username,
         private string $email,
         private string $password,
-    ) { }
+    )
+    {
+    }
 
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             'name' => $this->name,
+            'username' => $this->username,
             'email' => $this->email,
         ];
     }

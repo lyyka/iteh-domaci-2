@@ -60,32 +60,34 @@ export default {
             </div>
         </div>
 
-        <div class="row g-5 text-center mt-2">
-            <div class="col-12 col-sm-6 col-md-4"
-                 v-for="pet in feedData?.getResources()"
-                 :key="pet.getId()">
-                <PetCard
-                    :pet-prop="pet"
-                />
+        <div v-else>
+            <div class="row g-5 text-center mt-2">
+                <div class="col-12 col-sm-6 col-md-4"
+                     v-for="pet in feedData?.getResources()"
+                     :key="pet.getId()">
+                    <PetCard
+                        :pet-prop="pet"
+                    />
+                </div>
             </div>
-        </div>
 
-        <div class="mt-5 text-end">
-            <button class="btn me-4 btn-dark"
-                    :disabled="feedData?.isStart()"
-                    @click="previousPage">
-                &lt; previous page
-            </button>
+            <div class="mt-5 text-end">
+                <button class="btn me-4 btn-dark"
+                        :disabled="feedData?.isStart()"
+                        @click="previousPage">
+                    &lt; previous page
+                </button>
 
-            <p class="rounded-1 border-dark py-2 px-4 border d-inline-flex me-4">
-                {{ feedData?.getCurrentPage() }}
-            </p>
+                <p class="rounded-1 border-dark py-2 px-4 border d-inline-flex me-4">
+                    {{ feedData?.getCurrentPage() }}
+                </p>
 
-            <button class="btn btn-dark"
-                    :disabled="!feedData?.hasMore()"
-                    @click="nextPage">
-                next page &gt;
-            </button>
+                <button class="btn btn-dark"
+                        :disabled="!feedData?.hasMore()"
+                        @click="nextPage">
+                    next page &gt;
+                </button>
+            </div>
         </div>
     </div>
 </template>
