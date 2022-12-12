@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AppPageController::class, 'show'])->name('web.home');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AppPageController::class, 'show'])->name('web.users.login');
-    Route::get('/register', [AppPageController::class, 'show'])->name('web.users.register');
+    Route::get('/auth/login', [AppPageController::class, 'show'])->name('web.users.login');
+    Route::get('/auth/register', [AppPageController::class, 'show'])->name('web.users.register');
 });
 
 Route::middleware('auth:web')->group(function () {
-    Route::get('/dashboard', [AppPageController::class, 'show'])->name('web.users.dashboard');
-    Route::get('/account', [AppPageController::class, 'show'])->name('web.users.account');
+    Route::get('/auth/dashboard', [AppPageController::class, 'show'])->name('web.users.dashboard');
+    Route::get('/auth/account', [AppPageController::class, 'show'])->name('web.users.account');
     Route::get('/{username}', [AppPageController::class, 'show'])->name('web.users.user-profile');
 });
