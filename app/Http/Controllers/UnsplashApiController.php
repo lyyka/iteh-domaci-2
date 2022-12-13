@@ -15,7 +15,7 @@ class UnsplashApiController extends Controller
      * @return JsonResponse
      * @throws Exception
      */
-    public function search(UnsplashApiSearchRequest $request, UnsplashService $unsplashService)
+    public function search(UnsplashApiSearchRequest $request, UnsplashService $unsplashService): JsonResponse
     {
         return response()->json(
             $unsplashService
