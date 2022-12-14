@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PetDeleteRequest;
 use App\Http\Requests\PetStoreRequest;
 use App\Http\Requests\PetUpdateRequest;
 use App\Http\Resources\PetResource;
@@ -65,11 +66,11 @@ class PetController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param PetDeleteRequest $request
      * @param PetService $petService
      * @return JsonResponse
      */
-    public function delete(Request $request, PetService $petService): JsonResponse
+    public function delete(PetDeleteRequest $request, PetService $petService): JsonResponse
     {
         $pet = Pet::findOrFail($request->input('pet_id'));
 
