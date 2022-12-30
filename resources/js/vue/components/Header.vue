@@ -28,7 +28,7 @@ export default {
                             <router-link class="text-dark" :to="{name: 'home'}">
                                 <img
                                     alt="logo"
-                                    src="/storage/logo.png"
+                                    src="/images/logo.png"
                                 />
                                 <span class="ms-3">pets app</span>
                             </router-link>

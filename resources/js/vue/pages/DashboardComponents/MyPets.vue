@@ -37,7 +37,7 @@ export default {
     <div v-if="myPets.length === 0">
         <img
             alt="Empty"
-            src="/storage/empty-cat.gif"
+            src="/images/empty-cat.gif"
         />
     </div>
 

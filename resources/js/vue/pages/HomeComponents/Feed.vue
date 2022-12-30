@@ -46,7 +46,7 @@ export default {
                 <div class="col">
                     <img
                         alt="Not logged in animation"
-                        src="/storage/feed-register.gif"
+                        src="/images/feed-register.gif"
                     />
                 </div>
                 <div class="col align-self-center text-start">

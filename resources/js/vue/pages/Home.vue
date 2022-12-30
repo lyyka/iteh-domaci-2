@@ -67,7 +67,7 @@ export default {
 
 <style lang="scss">
 .hero {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/storage/home-hero.jpeg") center;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/home-hero.jpeg") center;
     height: 420px;
 }
 
